@@ -61,7 +61,7 @@ class MongoUserRepository extends UserRepository {
   async getUsers(role) {
     try {
       const users = await userModel.find({ role });
-      return new User(users.toObject());
+      return users.map((user) => new User(user.toObject()));
     } catch (error) {
       throw new Error(`Failed to fetch users: ${error.message}`);
     }

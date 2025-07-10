@@ -4,8 +4,8 @@ const TokenService = require("../../Domain/Services/TokenService");
 class JwtTokenService extends TokenService {
   constructor() {
     super();
-    this.accessSecret = process.env.ACCESS_TOKEN_SECRET;
-    this.refreshSecret = process.env.REFRESH_TOKEN_SECRET;
+    this.accessSecret = process.env.ACCESS_TOKEN;
+    this.refreshSecret = process.env.REFRESH_TOKEN;
     this.accessTokenExpiry = "1d";
     this.refreshTokenExpiry = "7d";
   }

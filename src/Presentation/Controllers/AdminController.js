@@ -21,6 +21,7 @@ class AdminController {
     try {
       const { user, accessToken, refreshToken } =
         await this.signInUseCase.execute(req.body, "admin");
+      console.log(user);
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -38,7 +39,7 @@ class AdminController {
         user,
       });
     } catch (error) {
-      res.status(500).json({ message: "Admin signIn-failed" });
+      res.status(500).json({ message: error.message || "Admin signIn-failed" });
     }
   }
 
@@ -48,7 +49,7 @@ class AdminController {
       const result = await this.fetchUsersUseCase.execute(role);
       res.status(200).json({ message: "fetch users successfull", result });
     } catch (error) {
-      res.status(500).json({ message: "fetch users-failed" });
+      res.status(500).json({ message: error.message || "fetch users-failed" });
     }
   }
 

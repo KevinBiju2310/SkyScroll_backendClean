@@ -16,7 +16,7 @@ class SignInUseCase {
       if (!user || !passwordMatch) {
         throw new Error("Incorrect email or password");
       }
-      if (!user.isVerified) {
+      if (user.role !== "admin" && !user.isVerified) {
         throw new Error("User is not verified");
       }
       if (user.isBlocked) {

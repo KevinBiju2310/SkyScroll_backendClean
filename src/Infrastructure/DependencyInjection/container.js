@@ -59,6 +59,13 @@ const CancelBookingUseCase = require("../../Application/Usecases/User/cancelBook
 const WalletDetailsUseCase = require("../../Application/Usecases/User/walletDetailsUseCase");
 const MongoWalletRepository = require("../Repositories/MongoWalletRepository");
 const MongoTravellerRepository = require("../Repositories/MongoTravellerRepository");
+const FetchUsersUseCase = require("../../Application/Usecases/Admin/fetchUsersUseCase");
+const ToggleBlockUsersUseCase = require("../../Application/Usecases/Admin/toggleBlockUsersUseCase");
+const FetchAirlinesUseCase = require("../../Application/Usecases/Admin/fetchAirlinesUseCase");
+const ToggleStatusAirlineUseCase = require("../../Application/Usecases/Admin/toggleStatusAirlineUseCase");
+const PasswordGenerator = require("../../Domain/Services/PasswordGenerator");
+const FetchAllAircraftsUseCase = require("../../Application/Usecases/Admin/fetchAllAircraftsUseCase");
+const UpdateAircraftStatusUseCase = require("../../Application/Usecases/Admin/updateAircraftStatusUseCase");
 
 class Container {
   constructor() {
@@ -78,6 +85,7 @@ class Container {
     this.register("tokenService", () => new JwtTokenService());
     this.register("emailService", () => new EmailService());
     this.register("otpService", () => new OtpService());
+    this.register("passwordgenerator", () => new PasswordGenerator());
     this.register(
       "signUpUseCase",
       () =>
@@ -284,6 +292,36 @@ class Container {
       "getAllBookingsUseCase",
       () => new GetAllBookingsUseCase(this.resolve("bookingRepository"))
     );
+    this.register(
+      "fetchUsersUseCase",
+      () => new FetchUsersUseCase(this.resolve("userRepository"))
+    );
+    this.register(
+      "toggleBlockUsersUseCase",
+      () => new ToggleBlockUsersUseCase(this.resolve("userRepository"))
+    );
+    this.register(
+      "fetchAirlinesUseCase",
+      () => new FetchAirlinesUseCase(this.resolve("userRepository"))
+    );
+    this.register(
+      "toggleStatusAirlineUseCase",
+      () =>
+        new ToggleStatusAirlineUseCase(
+          this.resolve("userRepository"),
+          this.resolve("emailService"),
+          this.resolve("passwordgenerator"),
+          this.resolve("authService")
+        )
+    );
+    this.register(
+      "fetchAllAircraftsUseCase",
+      () => new FetchAllAircraftsUseCase(this.resolve("aircraftRepository"))
+    );
+    this.register(
+      "updateAircraftStatusUseCase",
+      () => new UpdateAircraftStatusUseCase(this.resolve("aircraftRepository"))
+    );
 
     this.register(
       "userController",
@@ -310,7 +348,16 @@ class Container {
     );
     this.register(
       "adminController",
-      () => new AdminController(this.resolve("signInUseCase"))
+      () =>
+        new AdminController(
+          this.resolve("signInUseCase"),
+          this.resolve("fetchUsersUseCase"),
+          this.resolve("toggleBlockUsersUseCase"),
+          this.resolve("fetchAirlinesUseCase"),
+          this.resolve("toggleStatusAirlineUseCase"),
+          this.resolve("fetchAllAircraftsUseCase"),
+          this.resolve("updateAircraftStatusUseCase")
+        )
     );
     this.register(
       "airportController",
