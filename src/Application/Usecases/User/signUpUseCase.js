@@ -11,7 +11,7 @@ class SignUpUseCase {
   async execute(credentials) {
     try {
       const { email, password } = credentials;
-      const existingUser = this.userRepository.findByEmail(email);
+      const existingUser = await this.userRepository.findByEmail(email);
       if (existingUser) {
         throw new Error("Email already in use");
       }

@@ -1,13 +1,13 @@
 class GoogleSignUpUseCase {
-  constructor(userRepository, googleAuthService) {
+  constructor(userRepository, authService) {
     this.userRepository = userRepository;
-    this.googleAuthService = googleAuthService;
+    this.authService = authService;
   }
 
   async execute(googleDetails) {
     try {
       const { token } = googleDetails;
-      const ticket = await this.googleAuthService.verifyToken({
+      const ticket = await this.authService.verifyToken({
         idToken: token,
         audience: process.env.GOOGLE_CLIENT_ID,
       });

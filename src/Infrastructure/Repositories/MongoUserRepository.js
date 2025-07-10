@@ -20,7 +20,7 @@ class MongoUserRepository extends UserRepository {
     try {
       const userDoc = await userModel.findOne({ email });
       if (!userDoc) return null;
-      return User({
+      return new User({
         id: userDoc._id.toString(),
         ...userDoc.toObject(),
       });

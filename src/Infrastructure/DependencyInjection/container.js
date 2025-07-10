@@ -58,6 +58,7 @@ const GetBookedAirlinesUseCase = require("../../Application/Usecases/User/getBoo
 const CancelBookingUseCase = require("../../Application/Usecases/User/cancelBookingUseCase");
 const WalletDetailsUseCase = require("../../Application/Usecases/User/walletDetailsUseCase");
 const MongoWalletRepository = require("../Repositories/MongoWalletRepository");
+const MongoTravellerRepository = require("../Repositories/MongoTravellerRepository");
 
 class Container {
   constructor() {
@@ -72,6 +73,7 @@ class Container {
     this.register("tripRepository", () => new MongoTripRepository());
     this.register("bookingRepository", () => new MongoBookingRepository());
     this.register("walletRepository", () => new MongoWalletRepository());
+    this.register("travellerRepository", () => new MongoTravellerRepository());
     this.register("authService", () => new PasswordEncoder());
     this.register("tokenService", () => new JwtTokenService());
     this.register("emailService", () => new EmailService());
@@ -82,7 +84,8 @@ class Container {
         new SignUpUseCase(
           this.resolve("userRepository"),
           this.resolve("authService"),
-          this.resolve("emailService")
+          this.resolve("emailService"),
+          this.resolve("otpService")
         )
     );
     this.register(
@@ -116,7 +119,7 @@ class Container {
       () =>
         new GoogleSignUpUseCase(
           this.resolve("userRepository"),
-          this.resolve("googleAuthService")
+          this.resolve("authService")
         )
     );
     this.register(
@@ -124,7 +127,7 @@ class Container {
       () =>
         new GoogleSignInUseCase(
           this.resolve("userRepository"),
-          this.resolve("googleAuthService"),
+          this.resolve("authService"),
           this.resolve("tokenService")
         )
     );

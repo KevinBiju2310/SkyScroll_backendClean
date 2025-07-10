@@ -1,13 +1,10 @@
-const stripe = require("stripe")(process.env.STRIPE_SECRET);
+// const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
-class PaymentService {
-    async createPaymentIntent(){
-        try{
+// class PaymentService {
+//   async createPaymentIntent() {
+//     try {
+//     } catch (error) {}
+//   }
+// }
 
-        }catch(error){
-            
-        }
-    }
-}
-
-module.exports = PaymentService;
+// module.exports = PaymentService;
